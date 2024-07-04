@@ -1,22 +1,24 @@
 from pathlib import Path
 
+import click
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
 from langchain.retrievers import ParentDocumentRetriever
-from langchain.text_splitter import (CharacterTextSplitter,
-                                     RecursiveCharacterTextSplitter)
+from langchain.text_splitter import (
+    CharacterTextSplitter,
+    RecursiveCharacterTextSplitter,
+)
 from langchain_chroma import Chroma
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.llms import Ollama
 from langchain_community.vectorstores import FAISS, Chroma
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.runnables import Runnable
 from langchain_core.stores import InMemoryStore
 
 
 def get_model():
-    return Ollama(model="llama3")
+    return Ollama(model="llama3", temperature=0.2)
 
 
 def load_docs():
@@ -26,8 +28,11 @@ def load_docs():
         loader = PyPDFLoader(str(file.resolve()))
         doc = loader.load()
         if len(doc[0].page_content) == 0:
-            print(
-                f"`{file.name}` is not loaded because pypdf does not parse it correctly"
+            click.echo(
+                click.style(
+                    f"`{file.name}` is not loaded because pypdf does not parse it correctly\n",
+                    fg="bright_blue",
+                )
             )
         documents.extend(loader.load())
     return documents
@@ -84,7 +89,6 @@ def get_stuff_chain(prompt):
     docs = split_text(docs)
     embedding = OllamaEmbeddings(model="llama3")
 
-    # retriever = get_retriever(docs, embedding)
     retriever = get_parent_doc_retriever(docs, embedding)
     llm = get_model()
     qa_chain = create_stuff_documents_chain(llm, prompt)
@@ -93,14 +97,27 @@ def get_stuff_chain(prompt):
     return retrieval_chain
 
 
-if __name__ == "__main__":
-
+@click.command
+@click.option("-t", "--job_title", help="Title of job for the posting", required=True)
+@click.option(
+    "-s", "--job_skills", help="List of skills. Comma separated", required=True
+)
+def main(job_title, job_skills):
     prompt, query_template = get_prompt()
     qa_chain = get_stuff_chain(prompt)
 
-    # job_description = "post=data engineer, competencies=serverless, snowflake, python"
-    job_description = "post=software development, competencies=Node, serverless, MongoDB"
+    job_description = f"post={job_title}, competencies={job_skills}"
     query = query_template.format(job_requirements=job_description)
     response = qa_chain.invoke({"input": query})
 
-    print(response["answer"])
+    click.echo(click.style("Parameters searching for:", fg="bright_green"))
+    click.echo(f"Job Title: {job_title}")
+    click.echo(f"Skills: {job_skills}")
+    click.echo("")
+
+    click.echo(click.style("Response:", fg="bright_green"))
+    click.echo(response["answer"])
+
+
+if __name__ == "__main__":
+    main()
