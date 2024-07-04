@@ -5,8 +5,12 @@ Code based on the post here: [blog post](https://archive.ph/1SSDY)
 
 does not use history - basically the user input is just the desired skills
 
-note: docs need to be added - 
+note: docs need to be added -
 
+-- todo--
+
+- take an input from cli
+- figure out how to check that pdf will be read
 
 ## Code Steps
 

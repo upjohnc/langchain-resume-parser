@@ -11,12 +11,13 @@ langchain = "0.2.6"
 langchain-community = "0.2.5"
 faiss-cpu = "1.8.0.post1"
 pypdf = "^4.2.0"
+langchain-chroma = "^0.1.2"
 
 [tool.poetry.group.dev.dependencies]
-pdbpp = "^0.10.3"
 pytest = "^8.2.2"
 black = "24.4.2"
 isort = "5.13.2"
+pdbpp = "^0.10.3"
 
 [build-system]
 requires = ["poetry-core"]
