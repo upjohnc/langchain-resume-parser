@@ -1,0 +1,11 @@
+Based on the provided context, Steve Brettschneider's skills include:
+
+1. Project management: He managed projects, including setting up architecture functions, developing software development standards, directing the development of a data dictionary, and managing implementation projects.
+2. Software development: He developed software applications in various programming languages, such as Visual Basic 6 and .NET, and was responsible for the conversion of departmental development from Visual Basic 6 to Visual Basic.NET.
+3. Data warehousing and business intelligence: He designed and implemented an enterprise data warehouse and business intelligence solution, including ETL routines, data logging, and front-end reporting and business intelligence.
+4. Technical leadership: He led technical efforts to develop reusable code frameworks for extranet portals, evaluated and replaced transactional media buying and accounting systems, and executed tasks for various projects in an educational institution.
+5. System administration: He administered VAX/VMS, DEC Ultrix, Novell Netware, SCO UNIX, IBM AIX, and Informix database servers.
+6. Application development: He developed applications in languages such as C, ANSI C, and .NET, and maintained existing applications in various domains, including tuition and housing accounting systems, class scheduling application, and LAN backbone design.
+7. Training and support: He provided on-the-phone technical support to end-users and trained other developers in areas like the .NET framework and Object Oriented (OOP) design and development.
+
+These skills demonstrate Steve Brettschneider's versatility and expertise in various aspects of software development, system administration, project management, and technical leadership.

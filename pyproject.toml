@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "langchain-resume"
+version = "0.1.0"
+description = ""
+authors = ["Chad Upjohn <chad.upjohn@pinnsg.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+langchain = "0.2.6"
+langchain-community = "0.2.5"
+faiss-cpu = "1.8.0.post1"
+pypdf = "^4.2.0"
+
+[tool.poetry.group.dev.dependencies]
+pdbpp = "^0.10.3"
+pytest = "^8.2.2"
+black = "24.4.2"
+isort = "5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
