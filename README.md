@@ -11,6 +11,7 @@ note: docs need to be added -
 
 - take an input from cli
 - figure out how to check that pdf will be read
+- add type hints
 
 ## Code Steps
 
