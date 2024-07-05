@@ -13,15 +13,20 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.llms import Ollama
 from langchain_community.vectorstores import FAISS, Chroma
+from langchain_core.documents import Document
+from langchain_core.embeddings import Embeddings
+from langchain_core.language_models import BaseLLM
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import Runnable
 from langchain_core.stores import InMemoryStore
+from langchain_core.vectorstores import VectorStoreRetriever
 
 
-def get_model():
+def get_model() -> BaseLLM:
     return Ollama(model="llama3", temperature=0.2)
 
 
-def load_docs():
+def load_docs() -> list[Document]:
     pdf_folder_path = "./docs"
     documents = []
     for file in Path(pdf_folder_path).glob("*.pdf"):
@@ -38,19 +43,19 @@ def load_docs():
     return documents
 
 
-def split_text(docs):
+def split_text(docs: list[Document]) -> list[Document]:
     text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=20)
     docs_split = text_splitter.split_documents(docs)
 
     return docs_split
 
 
-def get_retriever(docs, embedding):
+def get_retriever(docs: list[Document], embedding: Embeddings) -> VectorStoreRetriever:
     vector_store = FAISS.from_documents(docs, embedding)
     return vector_store.as_retriever()
 
 
-def get_parent_doc_retriever(docs, embedding):
+def get_parent_doc_retriever(docs: list[Document], embedding: Embeddings):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=20)
     vector_store = Chroma(
         collection_name="full_documents", embedding_function=embedding
@@ -63,7 +68,7 @@ def get_parent_doc_retriever(docs, embedding):
     return retriever
 
 
-def get_prompt():
+def get_prompt() -> tuple[ChatPromptTemplate, str]:
     prompt_template = """
     As a recruiter, you need to recommend a candidate.If you don't know the answer, just say that you don't know, don't try to make up an answer.
     {context}
@@ -84,7 +89,7 @@ def get_prompt():
     return prompt, query_template
 
 
-def get_stuff_chain(prompt):
+def get_stuff_chain(prompt: ChatPromptTemplate) -> Runnable:
     docs = load_docs()
     docs = split_text(docs)
     embedding = OllamaEmbeddings(model="llama3")
